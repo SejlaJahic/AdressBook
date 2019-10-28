@@ -26,9 +26,9 @@ public class CreateDatabaseAdressBook {
 		String ddl2 ="CREATE TABLE AdressBook ("
 				+ " ID int IDENTITY(1,1),"
 				+ " UserId int,"
-				+ "	FirstName int,"
-				+ "	LastName int,"
-				+ "	Number int,"
+				+ "	FirstName nvarchar(30),"
+				+ "	LastName nvarchar(30),"
+				+ "	Number nvarchar(15),"
 				+ " PRIMARY KEY(ID),"
 				+ "	FOREIGN KEY(UserId) REFERENCES Users(ID)"
 				+ "	)";

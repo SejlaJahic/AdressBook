@@ -1,12 +1,17 @@
 package com.AdressBook;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class RegisterUser {
 
 	public static Scanner scanner = new Scanner(System.in);
 
-	public User register() {
+	public static User register() {
 		System.out.println("Enter first name:");
 		String firstName = scanner.next();
 
@@ -33,8 +38,39 @@ public class RegisterUser {
 				scanner.nextLine();
 			}
 		}
-		
-		System.out.println("You have succesfully registered user " + firstName);
-		return user;
+
+		Connection con = null;
+
+		String connectionUrl = "jdbc:sqlserver://DESKTOP-Q6E269E\\SQLEXPRESS;database=AdressBook;integratedSecurity=true;";
+		try {
+			con = DriverManager.getConnection(connectionUrl);
+			Statement st = con.createStatement();
+
+			st.executeUpdate("INSERT INTO Users(FirstName,LastName,Age,Number) VALUES('"
+					+ user.getFirstName()
+					+ "','"
+					+ user.getLastName()
+					+ "',"
+					+ user.getAge() + ",'" + user.getNumber() + "')");
+			System.out.println("You have succesfully registered user "
+					+ firstName);
+
+			ResultSet rs = st
+					.executeQuery("SELECT ID FROM Users WHERE FirstName='"
+							+ user.getFirstName() + "' AND LastName='"
+							+ user.getLastName() + "'");
+
+			while (rs.next()) {
+				System.out.println("ID Number is: " + rs.getInt(1));
+			}
+
+			rs.close();
+			con.close();
+			return user;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
