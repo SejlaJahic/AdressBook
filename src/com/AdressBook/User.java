@@ -2,6 +2,7 @@ package com.AdressBook;
 
 public class User {
 
+	private int id;
 	private String firstName;
 	private String lastName;
 	private int age;
@@ -44,6 +45,14 @@ public class User {
 		}
 
 		this.number = number;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override

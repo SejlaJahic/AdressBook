@@ -11,7 +11,7 @@ public class RegisterUser {
 
 	public static Scanner scanner = new Scanner(System.in);
 
-	public static User register() {
+	public static void register() {
 		System.out.println("Enter first name:");
 		String firstName = scanner.next();
 
@@ -21,23 +21,8 @@ public class RegisterUser {
 		System.out.println("Enter age:");
 		int age = scanner.nextInt();
 
-		User user = new User();
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setAge(age);
-
-		boolean proceed = true;
-		while (proceed) {
-			try {
-				System.out.println("Enter telephone number:");
-				String telNum = scanner.next();
-				user.setNumber(telNum);
-				proceed = false;
-			} catch (Exception e) {
-				e.getMessage();
-				scanner.nextLine();
-			}
-		}
+		System.out.println("Enter telephone number:");
+		String telNum = scanner.next();
 
 		Connection con = null;
 
@@ -47,18 +32,18 @@ public class RegisterUser {
 			Statement st = con.createStatement();
 
 			st.executeUpdate("INSERT INTO Users(FirstName,LastName,Age,Number) VALUES('"
-					+ user.getFirstName()
+					+ firstName
 					+ "','"
-					+ user.getLastName()
+					+ lastName
 					+ "',"
-					+ user.getAge() + ",'" + user.getNumber() + "')");
+					+ age + ",'" + telNum + "')");
 			System.out.println("You have succesfully registered user "
 					+ firstName);
 
 			ResultSet rs = st
 					.executeQuery("SELECT ID FROM Users WHERE FirstName='"
-							+ user.getFirstName() + "' AND LastName='"
-							+ user.getLastName() + "'");
+							+ firstName + "' AND LastName='"
+							+ lastName + "' AND Age=" + age+" AND Number='" + telNum +"' ");
 
 			while (rs.next()) {
 				System.out.println("ID Number is: " + rs.getInt(1));
@@ -66,11 +51,9 @@ public class RegisterUser {
 
 			rs.close();
 			con.close();
-			return user;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return null;
 	}
 }

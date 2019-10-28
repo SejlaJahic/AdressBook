@@ -8,10 +8,11 @@ import java.sql.Statement;
 
 public class Login {
 
-	public static boolean login(){
+	public static User login(){
+		User user = new User();
 		System.out.println("Enter Your ID:");
 		int id = RegisterUser.scanner.nextInt();
-		
+		user.setId(id);
 		System.out.println("Enter Your first name:");
 		String fName = RegisterUser.scanner.next();
 		
@@ -21,10 +22,9 @@ public class Login {
 			con = DriverManager.getConnection(connectionUrl);
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * FROM Users WHERE ID="+id+" AND FirstName='" + fName+ "'");
-			
 			if(rs.next()){
 				System.out.println("You have successfully loged in!");
-				return true;
+				return user;
 			}
 			else{
 				System.out.println("Account with that ID and first name does not exist.");
@@ -36,7 +36,7 @@ public class Login {
 		
 		
 		
-		return false;
+		return null;
 	}
 	
 	
